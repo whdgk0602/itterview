@@ -18,7 +18,7 @@
 - 서버 DB/인증 없음 — Local Storage가 유일한 영속 저장소
 - OpenRouter API 키는 서버 환경변수(`OPENROUTER_API_KEY`)로만 관리하고, 모든 OpenRouter 호출은 `api/_shared/openrouter.ts`를 경유한다. 클라이언트 코드에 키를 절대 노출하지 않는다
 - 사용할 모델명은 하드코딩하지 않고 환경변수(`OPENROUTER_MODEL`)로 관리한다
-- 자동화 테스트는 `src/lib/`와 `api/_shared/`의 순수 함수에만 작성한다 (design spec 6장). 컴포넌트/훅/E2E 테스트는 이 계획에 포함하지 않고, 대신 수동 검증 단계를 둔다
+- 자동화 테스트 범위: `src/lib/`와 `api/_shared/`의 순수 함수(design spec 6장), 그리고 `api/generate-question.ts`/`api/submit-answer.ts` 핸들러(OpenRouter 호출을 모킹한 요청/응답 로직 검증 — 브라우저 렌더링이 필요 없는 서버 로직이라 spec이 제외한 "컴포넌트/E2E 테스트"에 해당하지 않음). React 컴포넌트/훅 테스트와 E2E 테스트는 이 계획에 포함하지 않고, 대신 수동 검증 단계를 둔다
 - API 실패 시 자동 재시도는 최대 1회. 무한 재시도나 실패를 조용히 삼키는 처리 금지
 - UI 카피는 한국어
 
