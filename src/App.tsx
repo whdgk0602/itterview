@@ -71,7 +71,7 @@ function App() {
     <div className="flex h-screen flex-col bg-slate-50">
       <StreakHeader streak={state.streak} />
       <div className="flex-1 overflow-hidden">
-        {alreadyAnsweredToday ? (
+        {alreadyAnsweredToday && messages.length === 0 ? (
           <p className="p-4 text-slate-500">오늘의 미션을 이미 완료했어요. 내일 다시 만나요!</p>
         ) : questionLoading ? (
           <p className="p-4 text-slate-500">질문을 불러오는 중...</p>
