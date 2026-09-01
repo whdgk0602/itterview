@@ -35,11 +35,11 @@ export function clearState(): void {
   window.localStorage.removeItem(STORAGE_KEY)
 }
 
-export function createInitialState(userProfile: UserProfile, today: string): AppState {
+export function createInitialState(userProfile: UserProfile): AppState {
   return {
     userProfile,
     streak: 0,
-    lastCheckIn: today,
+    lastCheckIn: '',
     history: [],
   }
 }

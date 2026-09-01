@@ -1,10 +1,7 @@
 import { useCallback, useState } from 'react'
 import type { AppState, GenerateQuestionResponse } from '../../types'
 import { hasAnsweredToday } from '../lib/storage'
-
-function todayString(): string {
-  return new Date().toISOString().slice(0, 10)
-}
+import { todayString } from '../lib/date'
 
 export function useDailyQuestion(state: AppState | null) {
   const [question, setQuestion] = useState<string | null>(null)
@@ -25,7 +22,11 @@ export function useDailyQuestion(state: AppState | null) {
           difficultyLevel: state.userProfile.difficultyLevel,
         }),
       })
-      if (!res.ok) throw new Error('질문을 불러오지 못했습니다.')
+      if (!res.ok) {
+        const body = (await res.json().catch(() => null)) as { error?: string } | null
+        setError(body?.error ?? '질문을 불러오지 못했어요. 다시 시도해주세요.')
+        return
+      }
       const data = (await res.json()) as GenerateQuestionResponse
       setQuestion(data.question)
     } catch {

@@ -11,7 +11,7 @@
 | 영역 | 스택 |
 |---|---|
 | Frontend | React (SPA), 채팅 UI |
-| Backend | Node.js, Vercel Serverless Function **1개** (OpenRouter 키를 숨기는 프록시 역할만) |
+| Backend | Node.js, Vercel Serverless Function **2개**(질문 생성 / 채점+피드백) (OpenRouter 키를 숨기는 프록시 역할만) |
 | Database | 없음 — 브라우저 Local Storage로 상태 관리 (MVP) |
 | AI | OpenRouter API, **무료(`:free`) 모델** — 모델명은 하드코딩 금지, 환경변수로 관리 |
 

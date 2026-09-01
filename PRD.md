@@ -21,7 +21,7 @@
 | 구분 | 기술 스택 | 비고 |
 |---|---|---|
 | Frontend | React (SPA) | 채팅 UI 기반 설계 |
-| Backend | Node.js (Vercel Serverless Function 1개) | OpenRouter API 키를 숨기는 프록시 역할만 수행. Firebase Functions는 외부 API 아웃바운드 호출에 유료(Blaze) 플랜이 필요해 비용상 불리하므로 미채택 |
+| Backend | Node.js (Vercel Serverless Function 2개: 질문 생성 / 채점+피드백) | 목적이 다른 두 프롬프트를 분리해 각각 OpenRouter API 키를 숨기는 프록시 역할만 수행. 둘 다 OpenRouter 호출/에러 처리 로직은 공통 헬퍼(`_shared/openrouter.ts`)로 공유. Firebase Functions는 외부 API 아웃바운드 호출에 유료(Blaze) 플랜이 필요해 비용상 불리하므로 미채택 |
 | Database | Local Storage | 초기 MVP 단계에서의 비용 절감 및 빠른 구현 (Client-side) |
 | AI Model | OpenRouter API (무료 모델, `:free` 접미사) | 특정 모델명을 하드코딩하지 않고 환경변수로 관리 (무료 모델은 목록이 자주 바뀌고 rate limit이 있음) |
 
@@ -120,7 +120,7 @@
 | 항목 | 결정 |
 |---|---|
 | AI 모델 비용 | OpenRouter 무료(`:free`) 모델 사용. 모델명은 하드코딩하지 않고 환경변수로 관리 (무료 모델 목록/rate limit이 자주 바뀜) |
-| 백엔드 | Vercel Serverless Function 1개로 OpenRouter 키를 숨기는 프록시만 수행. Firebase는 아웃바운드 호출에 유료 플랜이 필요해 미채택 |
+| 백엔드 | Vercel Serverless Function 2개(질문 생성 / 채점+피드백)로 OpenRouter 키를 숨기는 프록시만 수행. 목적이 다른 두 프롬프트라 분리, 공통 로직은 `_shared/openrouter.ts`로 공유. Firebase는 아웃바운드 호출에 유료 플랜이 필요해 미채택 |
 | 채점 로직 | AI가 자유서술형 답변을 보고 판단. 정답 여부(`isCorrect`)와 피드백을 한 번의 LLM 호출에서 구조화된 JSON으로 함께 받음 (F4 참고) |
 | 스트릭 보호 | 하루 결석까지는 유예, 이틀 이상 결석 시 리셋 (F5 참고) |
 

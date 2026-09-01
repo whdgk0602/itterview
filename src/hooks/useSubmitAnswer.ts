@@ -15,7 +15,11 @@ export function useSubmitAnswer() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question, answer }),
       })
-      if (!res.ok) throw new Error('채점에 실패했습니다.')
+      if (!res.ok) {
+        const body = (await res.json().catch(() => null)) as { error?: string } | null
+        setError(body?.error ?? '답변을 채점하지 못했어요. 다시 시도해주세요.')
+        return null
+      }
       const data = (await res.json()) as AIGradeResponse
       setResult(data)
       return data

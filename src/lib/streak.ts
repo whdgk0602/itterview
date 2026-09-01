@@ -9,6 +9,8 @@ export function calculateStreak(
   lastCheckIn: string,
   today: string,
 ): number {
+  if (!lastCheckIn) return 1
+
   const diff = daysBetween(lastCheckIn, today)
 
   if (diff <= 0) return currentStreak

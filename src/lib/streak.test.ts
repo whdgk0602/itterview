@@ -21,4 +21,8 @@ describe('calculateStreak', () => {
   it('아주 오래 전 마지막 체크인이면 스트릭을 1로 리셋한다', () => {
     expect(calculateStreak(0, '2020-01-01', '2026-08-23')).toBe(1)
   })
+
+  it('한 번도 체크인한 적이 없으면(빈 문자열) 스트릭을 1로 시작한다', () => {
+    expect(calculateStreak(0, '', '2026-08-23')).toBe(1)
+  })
 })

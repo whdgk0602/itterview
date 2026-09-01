@@ -4,10 +4,7 @@ import type { AppState, HistoryEntry, UserProfile } from '../../types'
 import { appendHistoryEntry, clearState, createInitialState, loadState, saveState } from '../lib/storage'
 import { calculateDifficulty } from '../lib/difficulty'
 import { calculateStreak } from '../lib/streak'
-
-function todayString(): string {
-  return new Date().toISOString().slice(0, 10)
-}
+import { todayString } from '../lib/date'
 
 export function useLocalStorage() {
   const initialResult = loadState()
@@ -23,7 +20,7 @@ export function useLocalStorage() {
   }, [])
 
   const completeOnboarding = useCallback((profile: UserProfile) => {
-    const initial = createInitialState(profile, todayString())
+    const initial = createInitialState(profile)
     saveState(initial)
     setState(initial)
   }, [])

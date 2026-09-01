@@ -35,7 +35,7 @@ describe('loadState', () => {
   })
 
   it('saveState로 저장한 값을 status: ok로 그대로 불러온다', () => {
-    const state = createInitialState(profile, '2026-08-23')
+    const state = createInitialState(profile)
     saveState(state)
     expect(loadState()).toEqual({ status: 'ok', state })
   })
@@ -43,7 +43,7 @@ describe('loadState', () => {
 
 describe('clearState', () => {
   it('저장된 값을 지우면 다시 status: empty가 된다', () => {
-    saveState(createInitialState(profile, '2026-08-23'))
+    saveState(createInitialState(profile))
     clearState()
     expect(loadState()).toEqual({ status: 'empty' })
   })
@@ -51,7 +51,7 @@ describe('clearState', () => {
 
 describe('appendHistoryEntry', () => {
   it('원본 state를 변경하지 않고 새 history를 추가한 state를 반환한다', () => {
-    const state = createInitialState(profile, '2026-08-23')
+    const state = createInitialState(profile)
     const entry = { date: '2026-08-23', question: 'Q', isCorrect: true, feedback: 'F' }
     const next = appendHistoryEntry(state, entry)
     expect(state.history).toHaveLength(0)
@@ -61,7 +61,7 @@ describe('appendHistoryEntry', () => {
 
 describe('hasAnsweredToday', () => {
   it('오늘 날짜의 history 항목이 있으면 true를 반환한다', () => {
-    const state = appendHistoryEntry(createInitialState(profile, '2026-08-23'), {
+    const state = appendHistoryEntry(createInitialState(profile), {
       date: '2026-08-23',
       question: 'Q',
       isCorrect: true,
@@ -71,7 +71,7 @@ describe('hasAnsweredToday', () => {
   })
 
   it('오늘 날짜의 history 항목이 없으면 false를 반환한다', () => {
-    const state = createInitialState(profile, '2026-08-23')
+    const state = createInitialState(profile)
     expect(hasAnsweredToday(state, '2026-08-23')).toBe(false)
   })
 })
