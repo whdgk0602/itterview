@@ -1,7 +1,14 @@
 // src/hooks/useLocalStorage.ts
 import { useCallback, useState } from 'react'
 import type { AppState, HistoryEntry, UserProfile } from '../../types'
-import { appendHistoryEntry, clearState, createInitialState, loadState, saveState } from '../lib/storage'
+import {
+  appendHistoryEntry,
+  clearState,
+  createInitialState,
+  loadState,
+  parseBackup,
+  saveState,
+} from '../lib/storage'
 import { calculateDifficulty } from '../lib/difficulty'
 import { calculateStreak } from '../lib/streak'
 import { todayString } from '../lib/date'
@@ -48,5 +55,14 @@ export function useLocalStorage() {
     })
   }, [])
 
-  return { state, isCorrupted, resetCorrupted, completeOnboarding, recordAnswer }
+  const importBackup = useCallback((raw: string) => {
+    const parsed = parseBackup(raw)
+    if (!parsed) return false
+    saveState(parsed)
+    setState(parsed)
+    setIsCorrupted(false)
+    return true
+  }, [])
+
+  return { state, isCorrupted, resetCorrupted, completeOnboarding, recordAnswer, importBackup }
 }

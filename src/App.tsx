@@ -6,9 +6,11 @@ import { useSubmitAnswer } from './hooks/useSubmitAnswer'
 import { OnboardingForm } from './components/OnboardingForm'
 import { StreakHeader } from './components/StreakHeader'
 import { ChatWindow, type ChatMessageItem } from './components/ChatWindow'
+import { BackupControls } from './components/BackupControls'
 
 function App() {
-  const { state, isCorrupted, resetCorrupted, completeOnboarding, recordAnswer } = useLocalStorage()
+  const { state, isCorrupted, resetCorrupted, completeOnboarding, recordAnswer, importBackup } =
+    useLocalStorage()
   const {
     question,
     loading: questionLoading,
@@ -41,17 +43,23 @@ function App() {
         >
           초기화하고 다시 시작하기
         </button>
+        <BackupControls onImport={importBackup} />
       </div>
     )
   }
 
   if (!state) {
     return (
-      <OnboardingForm
-        onSubmit={(targetJob, focusTopic) =>
-          completeOnboarding({ targetJob, focusTopic, difficultyLevel: '보통' })
-        }
-      />
+      <>
+        <OnboardingForm
+          onSubmit={(targetJob, focusTopic) =>
+            completeOnboarding({ targetJob, focusTopic, difficultyLevel: '보통' })
+          }
+        />
+        <div className="mx-auto max-w-sm">
+          <BackupControls onImport={importBackup} />
+        </div>
+      </>
     )
   }
 
@@ -70,6 +78,7 @@ function App() {
   return (
     <div className="flex h-screen flex-col bg-slate-50">
       <StreakHeader streak={state.streak} />
+      <BackupControls state={state} onImport={importBackup} />
       <div className="flex-1 overflow-hidden">
         {alreadyAnsweredToday && messages.length === 0 ? (
           <p className="p-4 text-slate-500">오늘의 미션을 이미 완료했어요. 내일 다시 만나요!</p>

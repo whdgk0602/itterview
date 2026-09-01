@@ -6,6 +6,8 @@ import {
   createInitialState,
   appendHistoryEntry,
   hasAnsweredToday,
+  serializeState,
+  parseBackup,
 } from './storage'
 import type { UserProfile } from '../../types'
 
@@ -73,5 +75,26 @@ describe('hasAnsweredToday', () => {
   it('오늘 날짜의 history 항목이 없으면 false를 반환한다', () => {
     const state = createInitialState(profile)
     expect(hasAnsweredToday(state, '2026-08-23')).toBe(false)
+  })
+})
+
+describe('serializeState / parseBackup', () => {
+  it('serializeState로 만든 문자열을 parseBackup으로 되돌리면 원본 state와 같다', () => {
+    const state = appendHistoryEntry(createInitialState(profile), {
+      date: '2026-08-23',
+      question: 'Q',
+      isCorrect: true,
+      feedback: 'F',
+    })
+    const raw = serializeState(state)
+    expect(parseBackup(raw)).toEqual(state)
+  })
+
+  it('깨진 JSON 문자열이면 null을 반환한다', () => {
+    expect(parseBackup('{not valid json')).toBeNull()
+  })
+
+  it('필수 필드가 없는 값이면 null을 반환한다', () => {
+    expect(parseBackup(JSON.stringify({ foo: 'bar' }))).toBeNull()
   })
 })

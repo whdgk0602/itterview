@@ -7,23 +7,40 @@ export type LoadStateResult =
   | { status: 'corrupted' }
   | { status: 'ok'; state: AppState }
 
+function isValidAppState(value: unknown): value is AppState {
+  const parsed = value as Partial<AppState> | null
+  return (
+    !!parsed &&
+    !!parsed.userProfile &&
+    typeof parsed.streak === 'number' &&
+    typeof parsed.lastCheckIn === 'string' &&
+    Array.isArray(parsed.history)
+  )
+}
+
 export function loadState(): LoadStateResult {
   const raw = window.localStorage.getItem(STORAGE_KEY)
   if (!raw) return { status: 'empty' }
 
   try {
-    const parsed = JSON.parse(raw) as AppState
-    if (
-      !parsed.userProfile ||
-      typeof parsed.streak !== 'number' ||
-      typeof parsed.lastCheckIn !== 'string' ||
-      !Array.isArray(parsed.history)
-    ) {
-      return { status: 'corrupted' }
-    }
+    const parsed = JSON.parse(raw)
+    if (!isValidAppState(parsed)) return { status: 'corrupted' }
     return { status: 'ok', state: parsed }
   } catch {
     return { status: 'corrupted' }
+  }
+}
+
+export function serializeState(state: AppState): string {
+  return JSON.stringify(state, null, 2)
+}
+
+export function parseBackup(raw: string): AppState | null {
+  try {
+    const parsed = JSON.parse(raw)
+    return isValidAppState(parsed) ? parsed : null
+  } catch {
+    return null
   }
 }
 
