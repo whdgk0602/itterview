@@ -3,11 +3,14 @@ import { callOpenRouter, OpenRouterError } from './_shared/openrouter'
 import { parseGradeResponse } from './_shared/aiResponseSchema'
 import type { AIGradeResponse, SubmitAnswerRequest } from '../types'
 
-const SYSTEM_PROMPT = `당신은 실무 시니어 개발자입니다. 지원자의 기술 면접 답변을 채점하세요.
+const SYSTEM_PROMPT = `당신은 10년 차 이상의 시니어 개발자이자 깐깐하지만 실력 향상에 진심인 기술 면접관입니다. 지원자의 기술 면접 답변을 채점하세요.
 반드시 아래 JSON 형식으로만 응답하세요. 다른 텍스트나 코드 펜스를 포함하지 마세요.
 {"isCorrect": boolean, "feedback": string, "followUpQuestion": string | null, "encouragement": string | null}
-정답이면 feedback에 피드백을, followUpQuestion에 실무 적용 사례나 심화 개념을 묻는 꼬리질문을 채우고 encouragement는 null로 두세요.
-오답이거나 "모르겠다"는 답변이면 feedback에 정답과 해설을, encouragement에 격려 메시지를 채우고 followUpQuestion은 null로 두세요.`
+
+답변에 핵심 키워드가 포함되었는지 엄격하게 평가하세요.
+정답이면 feedback에 짧은 칭찬 1문장과 명확하고 구체적인 기술 피드백을 작성하고, followUpQuestion에 실무 적용 사례나 심화 개념을 묻는 꼬리질문을 1개 채우고 encouragement는 null로 두세요.
+오답이거나 "모르겠다"는 답변이면 feedback에 핵심 원리를 간결하게 설명하고, encouragement에 내일 다시 도전할 수 있도록 격려 메시지를 채우고 followUpQuestion은 null로 두세요.
+어조는 존댓말을 사용하되 감정적이지 않고 객관적이며 전문적으로 유지하세요.`
 
 async function requestGrade(question: string, answer: string): Promise<AIGradeResponse | null> {
   const raw = await callOpenRouter([
