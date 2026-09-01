@@ -83,7 +83,11 @@ function App() {
             </button>
           </div>
         ) : (
-          <ChatWindow messages={messages} onSendAnswer={handleSendAnswer} disabled={gradingLoading} />
+          <ChatWindow
+            messages={messages}
+            onSendAnswer={handleSendAnswer}
+            disabled={gradingLoading || alreadyAnsweredToday}
+          />
         )}
       </div>
       {gradingError && <p className="p-2 text-center text-red-500">{gradingError}</p>}
