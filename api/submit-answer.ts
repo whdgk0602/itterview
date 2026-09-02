@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { callOpenRouter, OpenRouterError } from './_shared/openrouter'
-import { parseGradeResponse } from './_shared/aiResponseSchema'
+import { callOpenRouter, OpenRouterError } from './_shared/openrouter.js'
+import { parseGradeResponse } from './_shared/aiResponseSchema.js'
 import type { AIGradeResponse, SubmitAnswerRequest } from '../types'
 
 const SYSTEM_PROMPT = `당신은 10년 차 이상의 시니어 개발자이자 깐깐하지만 실력 향상에 진심인 기술 면접관입니다. 지원자의 기술 면접 답변을 채점하세요.

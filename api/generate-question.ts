@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { callOpenRouter, OpenRouterError } from './_shared/openrouter'
+import { callOpenRouter, OpenRouterError } from './_shared/openrouter.js'
 import type { GenerateQuestionRequest, GenerateQuestionResponse } from '../types'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
