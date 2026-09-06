@@ -19,16 +19,19 @@ export function OnboardingForm({ onSubmit }: OnboardingFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mx-auto mt-20 max-w-sm space-y-4 rounded-lg bg-white p-6 shadow"
+      className="w-full max-w-sm space-y-5 rounded-xl bg-white p-8 shadow-lg"
     >
-      <h1 className="text-xl font-bold text-slate-800">시작하기 전에</h1>
+      <div className="space-y-1">
+        <h1 className="text-2xl font-bold text-slate-900">시작하기 전에</h1>
+        <p className="text-sm text-slate-500">매일의 기술 면접 코칭을 위해 몇 가지만 알려주세요.</p>
+      </div>
 
       <label className="block">
-        <span className="text-sm text-slate-600">목표 직무</span>
+        <span className="text-sm font-medium text-slate-600">목표 직무</span>
         <select
           value={targetJob}
           onChange={(e) => setTargetJob(e.target.value)}
-          className="mt-1 w-full rounded border border-slate-300 p-2"
+          className="mt-1 w-full rounded-md border border-slate-300 p-2 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         >
           {TARGET_JOBS.map((job) => (
             <option key={job} value={job}>
@@ -39,11 +42,11 @@ export function OnboardingForm({ onSubmit }: OnboardingFormProps) {
       </label>
 
       <label className="block">
-        <span className="text-sm text-slate-600">이번 주 집중 카테고리</span>
+        <span className="text-sm font-medium text-slate-600">이번 주 집중 카테고리</span>
         <select
           value={focusTopic}
           onChange={(e) => setFocusTopic(e.target.value)}
-          className="mt-1 w-full rounded border border-slate-300 p-2"
+          className="mt-1 w-full rounded-md border border-slate-300 p-2 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         >
           {FOCUS_TOPICS.map((topic) => (
             <option key={topic} value={topic}>
@@ -53,7 +56,10 @@ export function OnboardingForm({ onSubmit }: OnboardingFormProps) {
         </select>
       </label>
 
-      <button type="submit" className="w-full rounded bg-slate-800 py-2 font-medium text-white">
+      <button
+        type="submit"
+        className="w-full rounded-md bg-indigo-600 py-2.5 font-medium text-white transition hover:bg-indigo-700"
+      >
         시작하기
       </button>
     </form>

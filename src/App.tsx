@@ -35,31 +35,31 @@ function App() {
 
   if (isCorrupted) {
     return (
-      <div className="mx-auto mt-20 max-w-sm space-y-4 rounded-lg bg-white p-6 text-center shadow">
-        <p className="text-slate-700">저장된 데이터를 읽을 수 없어요. 초기화하고 다시 시작할까요?</p>
-        <button
-          onClick={resetCorrupted}
-          className="w-full rounded bg-slate-800 py-2 font-medium text-white"
-        >
-          초기화하고 다시 시작하기
-        </button>
-        <BackupControls onImport={importBackup} />
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
+        <div className="w-full max-w-sm space-y-4 rounded-xl bg-white p-8 text-center shadow-lg">
+          <p className="text-slate-700">저장된 데이터를 읽을 수 없어요. 초기화하고 다시 시작할까요?</p>
+          <button
+            onClick={resetCorrupted}
+            className="w-full rounded-md bg-indigo-600 py-2.5 font-medium text-white transition hover:bg-indigo-700"
+          >
+            초기화하고 다시 시작하기
+          </button>
+          <BackupControls variant="inline" onImport={importBackup} />
+        </div>
       </div>
     )
   }
 
   if (!state) {
     return (
-      <>
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-slate-50 p-4">
         <OnboardingForm
           onSubmit={(targetJob, focusTopic) =>
             completeOnboarding({ targetJob, focusTopic, difficultyLevel: '보통' })
           }
         />
-        <div className="mx-auto max-w-sm">
-          <BackupControls onImport={importBackup} />
-        </div>
-      </>
+        <BackupControls variant="inline" onImport={importBackup} />
+      </div>
     )
   }
 
@@ -77,17 +77,26 @@ function App() {
 
   return (
     <div className="flex h-screen flex-col bg-slate-50">
-      <StreakHeader streak={state.streak} />
-      <BackupControls state={state} onImport={importBackup} />
+      <div className="flex items-center justify-between border-b border-slate-200 bg-white pr-3">
+        <StreakHeader streak={state.streak} history={state.history} />
+        <BackupControls state={state} onImport={importBackup} />
+      </div>
       <div className="flex-1 overflow-hidden">
         {alreadyAnsweredToday && messages.length === 0 ? (
-          <p className="p-4 text-slate-500">오늘의 미션을 이미 완료했어요. 내일 다시 만나요!</p>
+          <div className="m-4 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-emerald-800">
+            오늘의 미션을 이미 완료했어요. 내일 다시 만나요!
+          </div>
         ) : questionLoading ? (
-          <p className="p-4 text-slate-500">질문을 불러오는 중...</p>
+          <div className="m-4 rounded-lg border border-slate-200 bg-white p-4 text-slate-500">
+            질문을 불러오는 중...
+          </div>
         ) : questionError ? (
-          <div className="space-y-2 p-4">
-            <p className="text-red-500">{questionError}</p>
-            <button onClick={fetchQuestion} className="rounded bg-slate-800 px-4 py-2 text-white">
+          <div className="m-4 space-y-3 rounded-lg border border-red-200 bg-red-50 p-4">
+            <p className="text-red-700">{questionError}</p>
+            <button
+              onClick={fetchQuestion}
+              className="rounded-md bg-indigo-600 px-4 py-2 font-medium text-white transition hover:bg-indigo-700"
+            >
               다시 시도
             </button>
           </div>
@@ -99,7 +108,11 @@ function App() {
           />
         )}
       </div>
-      {gradingError && <p className="p-2 text-center text-red-500">{gradingError}</p>}
+      {gradingError && (
+        <div className="m-4 mt-0 rounded-lg border border-red-200 bg-red-50 p-3 text-center text-red-700">
+          {gradingError}
+        </div>
+      )}
     </div>
   )
 }
