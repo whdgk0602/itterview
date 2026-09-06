@@ -71,14 +71,21 @@ function App() {
     const feedbackText = [result.feedback, result.followUpQuestion, result.encouragement]
       .filter((v): v is string => Boolean(v))
       .join('\n\n')
-    setMessages((prev) => [...prev, { role: 'feedback', text: feedbackText }])
+    setMessages((prev) => [
+      ...prev,
+      { role: 'feedback', text: feedbackText, isCorrect: result.isCorrect },
+    ])
     recordAnswer(question, result.isCorrect, result.feedback)
   }
 
   return (
     <div className="flex h-screen flex-col bg-slate-50">
       <div className="flex items-center justify-between border-b border-slate-200 bg-white pr-3">
-        <StreakHeader streak={state.streak} history={state.history} />
+        <StreakHeader
+          streak={state.streak}
+          history={state.history}
+          difficultyLevel={state.userProfile.difficultyLevel}
+        />
         <BackupControls state={state} onImport={importBackup} />
       </div>
       <div className="flex-1 overflow-hidden">

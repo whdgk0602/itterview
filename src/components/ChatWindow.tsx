@@ -4,6 +4,7 @@ import { MessageBubble } from './MessageBubble'
 export interface ChatMessageItem {
   role: 'question' | 'answer' | 'feedback'
   text: string
+  isCorrect?: boolean
 }
 
 interface ChatWindowProps {
@@ -26,7 +27,7 @@ export function ChatWindow({ messages, onSendAnswer, disabled }: ChatWindowProps
     <div className="flex h-full flex-col">
       <div className="flex-1 space-y-4 overflow-y-auto p-4">
         {messages.map((m, i) => (
-          <MessageBubble key={i} role={m.role} text={m.text} />
+          <MessageBubble key={i} role={m.role} text={m.text} isCorrect={m.isCorrect} />
         ))}
       </div>
       <form onSubmit={handleSubmit} className="flex gap-2 border-t border-slate-200 bg-white p-4">
