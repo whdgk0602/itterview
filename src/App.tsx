@@ -90,15 +90,15 @@ function App() {
       </div>
       <div className="flex-1 overflow-hidden">
         {alreadyAnsweredToday && messages.length === 0 ? (
-          <div className="m-4 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-emerald-800">
+          <div className="mx-auto my-4 w-[calc(100%-2rem)] max-w-3xl rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-emerald-800">
             오늘의 미션을 이미 완료했어요. 내일 다시 만나요!
           </div>
         ) : questionLoading ? (
-          <div className="m-4 rounded-lg border border-slate-200 bg-white p-4 text-slate-500">
+          <div className="mx-auto my-4 w-[calc(100%-2rem)] max-w-3xl rounded-lg border border-slate-200 bg-white p-4 text-slate-500">
             질문을 불러오는 중...
           </div>
         ) : questionError ? (
-          <div className="m-4 space-y-3 rounded-lg border border-red-200 bg-red-50 p-4">
+          <div className="mx-auto my-4 w-[calc(100%-2rem)] max-w-3xl space-y-3 rounded-lg border border-red-200 bg-red-50 p-4">
             <p className="text-red-700">{questionError}</p>
             <button
               onClick={fetchQuestion}
@@ -116,7 +116,7 @@ function App() {
         )}
       </div>
       {gradingError && (
-        <div className="m-4 mt-0 rounded-lg border border-red-200 bg-red-50 p-3 text-center text-red-700">
+        <div className="mx-auto mb-4 w-[calc(100%-2rem)] max-w-3xl rounded-lg border border-red-200 bg-red-50 p-3 text-center text-red-700">
           {gradingError}
         </div>
       )}

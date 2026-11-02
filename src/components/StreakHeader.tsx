@@ -21,17 +21,14 @@ export function StreakHeader({ streak, history, difficultyLevel }: StreakHeaderP
   const today = todayString()
   const historyByDate = new Map(history.map((entry) => [entry.date, entry]))
 
-  const days = Array.from({ length: TOTAL_DAYS }, (_, i) => {
-    const date = offsetDateString(today, i - (TOTAL_DAYS - 1))
-    return { date, entry: historyByDate.get(date) }
+  // 이번 주 토요일에서 끝나는 4주(일~토) 블록으로 채워 그리드가 항상 꽉 찬 직사각형이 되게 한다
+  const todayDow = new Date().getDay()
+  const startOffset = -(todayDow + (WEEKS - 1) * DAYS_PER_WEEK)
+  const cells = Array.from({ length: TOTAL_DAYS }, (_, i) => {
+    const offset = startOffset + i
+    const date = offsetDateString(today, offset)
+    return { date, entry: historyByDate.get(date), isFuture: offset > 0 }
   })
-
-  const [startYear, startMonth, startDay] = days[0].date.split('-').map(Number)
-  const startDow = new Date(startYear, startMonth - 1, startDay).getDay()
-  const cells: ({ date: string; entry?: HistoryEntry } | null)[] = [
-    ...Array.from({ length: startDow }, () => null),
-    ...days,
-  ]
 
   return (
     <div className="flex items-center gap-3 px-4 py-3">
@@ -42,26 +39,24 @@ export function StreakHeader({ streak, history, difficultyLevel }: StreakHeaderP
         {difficultyLevel}
       </span>
       <div
-        className="grid grid-flow-col gap-1"
+        className="grid grid-flow-col gap-[3px]"
         style={{ gridTemplateRows: `repeat(${DAYS_PER_WEEK}, minmax(0, 1fr))` }}
       >
-        {cells.map((cell, i) =>
-          cell ? (
-            <span
-              key={cell.date}
-              title={cell.entry ? `${cell.date} · ${cell.entry.isCorrect ? '정답' : '오답'}` : cell.date}
-              className={`h-3 w-3 rounded-sm ${
-                !cell.entry
+        {cells.map((cell) => (
+          <span
+            key={cell.date}
+            title={cell.entry ? `${cell.date} · ${cell.entry.isCorrect ? '정답' : '오답'}` : cell.date}
+            className={`h-2.5 w-2.5 rounded-sm ${
+              cell.isFuture
+                ? 'border border-slate-200'
+                : !cell.entry
                   ? 'bg-slate-200'
                   : cell.entry.isCorrect
                     ? 'bg-emerald-500'
                     : 'bg-amber-400'
-              }`}
-            />
-          ) : (
-            <span key={`pad-${i}`} className="h-3 w-3" />
-          ),
-        )}
+            }`}
+          />
+        ))}
       </div>
     </div>
   )
